@@ -3,6 +3,7 @@ html, body{
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: Gotham Rounded, sans-serif;
 }
 .input_field, .btn-delete {
     display: flex;
@@ -54,6 +55,8 @@ html, body{
     background-color: #427e04;
     color: #d2e7be;
 }
-
+.is-depressed {
+    background-color: #8a8585;
+}
 
 
