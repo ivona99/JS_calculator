@@ -5,20 +5,25 @@ html, body{
     height: 100%;
     font-family: Gotham Rounded, sans-serif;
 }
-.input_field, .btn-delete {
+.btn-delete {
     display: flex;
     justify-content: flex-end;
     margin: 20px 30px 0px 0px;
 }
-.total{
-    color: white;
-    font-size: 50px;
+.output {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.previous-operand, .current-operand {
     color: #fafafa;
+    font-size: 2.5rem;
 }
 .delete{
     color: #3f542b;
     background-color: transparent;
     font-size: 20px;
+    cursor: pointer;
 }
 .container{
     width: 400px;
@@ -44,6 +49,7 @@ html, body{
     font-size: 50px;
     color: #fafafa;
     background-color: #171717;
+    cursor: pointer;
 }
 .item-red {
     color: #ec726d;
