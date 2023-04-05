@@ -27,19 +27,16 @@ class Calculator {
     negative(number) {
         number = '+/-';
         if(number === '+/-'){
-            this.currentOperand = parseFloat(this.currentOperand) * -1;
+            this.currentOperand =parseFloat(this.currentOperand) * -1;
         }
     }
     getBracket(number) {
         number = '()';
         if(number === '()' && !this.bracketSwitch){
             this.currentOperand = "(";
-            console.log("first bracket", this.currentOperand);
-
         }
         else if(number ==='()' && this.currentOperand.includes('(')){
             this.currentOperand = this.currentOperand.toString() + ")";
-            console.log("second bracket", this.currentOperand);
         }
         this.bracketSwitch = !this.bracketSwitch;
 
@@ -105,7 +102,8 @@ class Calculator {
         // this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
         this.currentOperandTextElement.innerText = this.currentOperand;
         if(this.operation != null) {
-            this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+            // this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+            this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`
 
         }else {
             this.previousOperandTextElement.innerText = '';
@@ -175,5 +173,40 @@ negative.addEventListener('click', button => {
     calculator.negative(button);
     calculator.updateDisplay();
     console.log("btn", button);
-})
+});
 
+//keyboard
+document.addEventListener('keydown', function(event) {
+    let patternForNumbers = /[0-9]/g;
+    let patternForOperators = /[+\-*\/]/g;
+    if(event.key.match(patternForNumbers)) {
+        event.preventDefault();
+        calculator.appendNumber(event.key);
+        calculator.updateDisplay();
+    }
+    if(event.key === '.') {
+        event.preventDefault();
+        calculator.appendNumber(event.key);
+        calculator.updateDisplay();
+    }
+    if(event.key.match(patternForOperators)) {
+        event.preventDefault();
+        calculator.chooseOperation(event.key);
+        calculator.updateDisplay();
+    }
+    if(event.key === 'Enter' || event.key === '=') {
+        event.preventDefault();
+        calculator.compute();
+        calculator.updateDisplay();
+    }
+    if(event.key === 'Backspace'){
+        event.preventDefault();
+        calculator.delete();
+        calculator.updateDisplay();
+    }
+    if(event.key === 'Delete') {
+        event.preventDefault();
+        calculator.clear();
+        calculator.updateDisplay();
+    }
+});
