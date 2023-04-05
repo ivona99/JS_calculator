@@ -5,21 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <title>JavaScript Calculator</title>
 </head>
 <body>
 <div class="container">
   <div class="output">
-    <div data-previous-operand class="previous-operand"></div>
-    <div data-current-operand class="current-operand"></div>
+    <div class="calculation-output">
+      <div data-previous-operand class="previous-operand"></div>
+      <div data-current-operand class="current-operand"></div>
+   </div>
+   <div class="result" data-result></div>
   </div>
   <div class="btn-delete">
     <div class="delete" data-delete>⌫</div>
   </div>
   <div class="buttons">
     <button class="item item-red" data-all-clear>C</button>
-    <button class="item item-green">()</button>
-    <button class="item item-green">%</button>
+    <button id="t1" class="item item-green" data-brackets>()</button>
+    <button class="item item-green" data-operation>%</button>
     <button class="item item-green" data-operation>÷</button>
     <button class="item" data-number>7</button>
     <button class="item" data-number>8</button>
@@ -33,7 +37,7 @@
     <button class="item" data-number>2</button>
     <button class="item" data-number>3</button>
     <button class="item item-green" data-operation>+</button>
-    <button class="item">+/-</button>
+    <button class="item" data-negative>+/-</button>
     <button class="item" data-number>0</button>
     <button class="item" data-number>.</button>
     <button class="item back-green" data-equals>=</button>

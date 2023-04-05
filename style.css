@@ -14,8 +14,13 @@ html, body{
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    flex-direction: column;
 }
-.previous-operand, .current-operand {
+.calculation-output{
+    display: flex;
+    flex-direction: row;
+}
+.previous-operand, .current-operand, .result {
     color: #fafafa;
     font-size: 2.5rem;
 }
