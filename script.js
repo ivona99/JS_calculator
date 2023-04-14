@@ -13,6 +13,8 @@ class Calculator {
         this.result = '';
         this.resultOperandTextElement.innerText ='';  
         this.bracketSwitch = false;  
+        this.expression = '';
+        this.newOperation = undefined;
         
     }
     //deleting one by one number from end to start
@@ -23,6 +25,7 @@ class Calculator {
     appendNumber(number) {
         if(number === '.' && this.currentOperand.includes('.')) return;
         this.currentOperand = this.currentOperand.toString() + number.toString();
+      
     }
     negative(number) {
         number = '+/-';
@@ -32,11 +35,12 @@ class Calculator {
     }
     getBracket(number) {
         number = '()';
-        if(number === '()' && !this.bracketSwitch){
-            this.currentOperand = "(";
-        }
-        else if(number ==='()' && this.currentOperand.includes('(')){
+
+       if(number ==='()' && this.previousOperand.includes('(') && typeof this.operation !== undefined){
             this.currentOperand = this.currentOperand.toString() + ")";
+        }
+        else if(number === '()' && !this.bracketSwitch){
+            this.currentOperand = "(";
         }
         this.bracketSwitch = !this.bracketSwitch;
 
@@ -45,6 +49,14 @@ class Calculator {
     //choose operation, if the operation isn't choosen just return 
     chooseOperation(operation) {
         if(this.currentOperand === '') return;
+        if(this.previousOperand !== '' && this.operation !=null && this.currentOperand.includes('(')) {
+            this.expression = this.previousOperand;
+            this.newOperation = this.operation;
+        }else {
+            this.expression = 0;
+            this.newOperation = null;
+        }
+
         if(this.previousOperand !== '') {
             this.compute();
         }
@@ -52,13 +64,20 @@ class Calculator {
        this.previousOperand = this.currentOperand;
        this.currentOperand = ''; 
        this.result = '';
+
     }
     //convert numbers to float, if value is there calculate 
     compute() {
         let computation;
+        if(this.previousOperand.toString().includes('(') && this.currentOperand.toString().includes(')')) {
+            this.previousOperand = this.previousOperand.replace('(', '');
+            this.currentOperand = this.currentOperand.replace(')', '');
+        }
+
         const prev = parseFloat(this.previousOperand);
         const current = parseFloat(this.currentOperand);
         const result = parseFloat(this.result);
+        const expresion = parseFloat(this.expression);
         //if no value is entered just return
         if(isNaN(prev) || isNaN(current)) return
         switch(this.operation) {
@@ -80,34 +99,55 @@ class Calculator {
             default: 
             return
         }
+      if(this.newOperation !== null) {
+        switch(this.newOperation) {
+            case '+':
+                computation = expresion + computation;
+                break;
+            case '-':
+                computation = expresion - computation;
+                break;
+            case '×':
+                computation = expresion * computation;
+                break;
+            case '÷':
+                computation = expresion / computation;
+                break;
+            default: 
+            return
+        }
+    }
+ 
         this.currentOperand = computation;
         this.result = computation;
         this.operation = undefined;
         this.previousOperand = '';
-        this.resultOperandTextElement.innerText = this.result
+        this.expression = 0;
+        this.resultOperandTextElement.innerText = this.result;
+ }
 
-        
-       
-    }
-
-    getDisplayNumber(number) {
-        const floatNumber = parseFloat(number);
-        if(isNaN(floatNumber)) return '';
-        return floatNumber.toLocaleString('en');
-
-
-    }
+    // getDisplayNumber(number) {
+    //     const floatNumber = parseFloat(number);
+    //     if(isNaN(floatNumber)) return '';
+    //     return floatNumber.toLocaleString('en');
+    // }
     //for displaying on screen calculator
     updateDisplay() {
         // this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
         this.currentOperandTextElement.innerText = this.currentOperand;
         if(this.operation != null) {
             // this.previousOperandTextElement.innerText = `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
-            this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`
-
-        }else {
+            this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation}`;
+            this.resultOperandTextElement.innerText = `${this.result }`
+            if(this.expression !== '' && this.newOperation !=null) {
+                this.previousOperandTextElement.innerText = `${this.expression} ${this.newOperation} ${this.previousOperand} ${this.operation}`
+            }
+        }
+        else {
             this.previousOperandTextElement.innerText = '';
-            this.resultOperandTextElement.innerText = '';
+            // this.resultOperandTextElement.innerText = '';
+     
+            this.resultOperandTextElement.innerText = `${this.result }`
 
         }
     }
@@ -135,7 +175,7 @@ numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         calculator.appendNumber(button.innerText);
         calculator.updateDisplay();
-        calculator.compute();
+        // calculator.compute();
     })
 });
 
@@ -164,15 +204,13 @@ deleteButton.addEventListener('click', button => {
 
 brackets.addEventListener('click', button => {
   
-   calculator.getBracket(button); 
-//    console.log("btn", button);
+   calculator.getBracket(button);
    calculator.updateDisplay();
 });
 
 negative.addEventListener('click', button => {
     calculator.negative(button);
     calculator.updateDisplay();
-    console.log("btn", button);
 });
 
 //keyboard
